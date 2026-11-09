@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic HTML information -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Daily Coffee Shop online ordering menu">
+    <title>Daily Coffee | Order Coffee</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Connect the CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+
+        <!-- TOP HEADER: logo, ordering steps, and language -->
+        <header class="topbar">
+            <a href="#" class="brand" aria-label="Daily Coffee home">
+                <span class="brand-icon">☕</span>
+                <span class="brand-name">daily</span>
+                <span class="brand-tagline">COFFEE<br>& GOOD DAYS</span>
+            </a>
+
+            <div class="steps">
+                <div class="step active"><span>1</span> Choose your coffee</div>
+                <span class="step-arrow">›</span>
+                <div class="step"><span>2</span> Make it yours</div>
+                <span class="step-arrow">›</span>
+                <div class="step"><span>3</span> Pay & enjoy</div>
+            </div>
+
+            <div class="header-right">
+                <span>◎ &nbsp; EN</span>
+                <span class="kiosk-number">Kiosk 02</span>
+            </div>
+        </header>
+
+        <div class="layout">
+            <!-- LEFT SIDEBAR: navigation buttons -->
+            <aside class="sidebar">
+                <button class="side-link selected" data-view="menu">
+                    <span class="side-icon">☕</span><span>Menu</span>
+                </button>
+                <button class="side-link" data-view="favorites">
+                    <span class="side-icon">♡</span><span>Favorites</span>
+                </button>
+                <button class="side-link" data-view="offers">
+                    <span class="side-icon">◇</span><span>Offers</span>
+                </button>
+                <div class="help-link">ⓘ<small>Need help?</small></div>
+            </aside>
+
+            <!-- MAIN CONTENT: banner, categories, and products -->
+            <main class="main-content">
+                <section class="hero">
+                    <div class="hero-copy">
+                        <p class="eyebrow">FRESHLY BREWED. JUST FOR YOU.</p>
+                        <h1>Good days start<br>with great coffee.</h1>
+                        <p>Your daily ritual, made your way.</p>
+                    </div>
+                    <div class="hero-photo" role="img" aria-label="Coffee and croissant"></div>
+                </section>
+
+                <!-- Product category filters -->
+                <nav class="categories" aria-label="Product categories">
+                    <button class="category active" data-category="Coffee">☕ <span>Coffee</span></button>
+                    <button class="category" data-category="Non-coffee">♜ <span>Non-coffee</span></button>
+                    <button class="category" data-category="Pastries">♧ <span>Pastries</span></button>
+                    <button class="category" data-category="Combos">▱ <span>Combos</span></button>
+                </nav>
+
+                <div class="section-heading">
+                    <div>
+                        <h2 id="section-title">Find your daily favorite</h2>
+                        <span id="product-count">6 coffees</span>
+                    </div>
+                    <span class="sort-label">☷ &nbsp; Every cup, your way</span>
+                </div>
+
+                <!-- JavaScript inserts product cards inside this container -->
+                <section class="product-grid" id="product-grid" aria-live="polite"></section>
+
+                <p class="coffee-note">♧ &nbsp; 100% Arabica beans &nbsp; · &nbsp; Freshly made to order &nbsp; · &nbsp; Prices in PHP, VAT included</p>
+            </main>
+
+            <!-- RIGHT PANEL: shopping cart and checkout summary -->
+            <aside class="order-panel">
+                <div class="order-heading">
+                    <h2>Your order <span id="cart-count" class="count-badge">0</span></h2>
+                    <button id="clear-cart" class="clear-button">Clear all</button>
+                </div>
+
+                <div class="order-type">
+                    <button class="order-type-button active" data-type="Take away">♧ &nbsp; Take away</button>
+                    <button class="order-type-button" data-type="Dine in">♜ &nbsp; Dine in</button>
+                </div>
+
+                <!-- Cart items appear here -->
+                <div id="cart-items" class="cart-items">
+                    <div class="empty-cart">Your order is empty.<br>Choose something delicious!</div>
+                </div>
+
+                <button class="add-note" id="note-button">▢ &nbsp; Add a note for your barista &nbsp; ＋</button>
+                <textarea id="order-note" class="order-note" placeholder="Example: Please make it less sweet..." hidden></textarea>
+
+                <div class="suggestion">
+                    <strong>✨ A cup that's so you.</strong>
+                    <p>Choose your size, milk, sweetness and extra shots. Tap Customize to get it just right.</p>
+                </div>
+
+                <div class="order-bottom">
+                    <p class="ready-time">◷ &nbsp; Made fresh in about 4–6 minutes</p>
+                    <div class="price-row"><span>Subtotal · <span id="subtotal-items">0</span> items</span><span id="subtotal">₱0.00</span></div>
+                    <div class="price-row"><span>VAT included</span><span id="vat">₱0.00</span></div>
+                    <div class="total-row"><strong>Total</strong><strong id="total">₱0.00</strong></div>
+                    <button id="checkout-button" class="checkout-button">Continue to payment &nbsp; →</button>
+                    <p class="payment-note">▤ &nbsp; Card & cashless payments accepted</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- CUSTOMIZE DIALOG: JavaScript fills in the selected product -->
+    <div class="modal-backdrop" id="customize-modal" hidden>
+        <div class="modal">
+            <button class="modal-close" id="close-modal" aria-label="Close">×</button>
+            <p class="eyebrow red-text">MAKE IT YOURS</p>
+            <h2 id="modal-product-name">Customize your drink</h2>
+            <p id="modal-product-description" class="modal-description"></p>
+
+            <label for="size-select">Size</label>
+            <select id="size-select">
+                <option value="Regular">Regular</option>
+                <option value="Large">Large (+₱25)</option>
+            </select>
+
+            <label for="milk-select">Milk</label>
+            <select id="milk-select">
+                <option value="Regular milk">Regular milk</option>
+                <option value="Oat milk">Oat milk (+₱20)</option>
+                <option value="Almond milk">Almond milk (+₱25)</option>
+            </select>
+
+            <label for="sweetness-select">Sweetness</label>
+            <select id="sweetness-select">
+                <option value="Regular sweetness">Regular</option>
+                <option value="Less sweet">Less sweet</option>
+                <option value="No sugar">No sugar</option>
+                <option value="Extra sweet">Extra sweet</option>
+            </select>
+
+            <label for="extra-select">Extra shot</label>
+            <select id="extra-select">
+                <option value="No extra shot">No extra shot</option>
+                <option value="Extra espresso shot">Extra espresso shot (+₱30)</option>
+            </select>
+
+            <button id="add-customized" class="checkout-button">Add to order</button>
+        </div>
+    </div>
+
+    <!-- PAYMENT DIALOG -->
+    <div class="modal-backdrop" id="payment-modal" hidden>
+        <div class="modal payment-modal">
+            <button class="modal-close" id="close-payment" aria-label="Close">×</button>
+            <p class="eyebrow red-text">ALMOST THERE</p>
+            <h2>Ready to enjoy?</h2>
+            <p class="modal-description">Review your order total before continuing.</p>
+            <div class="payment-total"><span>Total to pay</span><strong id="payment-total">₱0.00</strong></div>
+            <label for="payment-method">Payment method</label>
+            <select id="payment-method">
+                <option>GCash</option>
+                <option>Cash</option>
+                <option>Credit / Debit card</option>
+            </select>
+            <button id="confirm-order" class="checkout-button">Confirm order</button>
+            <p id="payment-message" class="payment-message"></p>
+        </div>
+    </div>
+
+    <!-- Connect the JavaScript file at the end so HTML loads first -->
+    <script src="script.js"></script>
+</body>
+</html>
